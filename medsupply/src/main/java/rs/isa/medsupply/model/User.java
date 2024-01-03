@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
+import static rs.isa.medsupply.help.AppConstants.USER_ROLE;
+
 @Entity
 @DiscriminatorColumn(name = "user")
 @NoArgsConstructor
@@ -23,7 +25,7 @@ public class User extends BaseUser {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority(USER_ROLE));
     }
 
 }

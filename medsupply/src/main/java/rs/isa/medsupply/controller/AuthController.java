@@ -23,14 +23,26 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private AuthService service;
+    private AuthService authService;
     @Autowired
     private TokenService tokenService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDTO userDTO) {
-        service.register(userDTO);
+        authService.register(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/add-company-admin")
+    public ResponseEntity<?> addCompanyAdmin(@RequestBody UserDTO userDTO) {
+        UserDTO companyAdmin = authService.addCompanyAdmin(userDTO);
+        return ResponseEntity.ok(companyAdmin);
+    }
+
+    @PostMapping("/add-system-admin")
+    public ResponseEntity<?> addSystemAdmin(@RequestBody UserDTO userDTO) {
+        UserDTO systemAdmin = authService.addSystemAdmin(userDTO);
+        return ResponseEntity.ok(systemAdmin);
     }
 
     @PostMapping("/login")
@@ -41,10 +53,8 @@ public class AuthController {
             var accessToken = tokenService.generateAccessToken((User) authUser.getPrincipal());
             return ResponseEntity.ok(new JwtTokenDTO(accessToken));
         } catch (Exception e) {
-        // Handle authentication exception
-        e.printStackTrace(); // Log the exception for troubleshooting
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
+        }
     }
 
 }
