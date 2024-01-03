@@ -16,8 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import rs.isa.medsupply.security.SecurityFilter;
 
-import static rs.isa.medsupply.help.AppConstants.SYSTEM_ADMIN_ROLE;
-
 @Configuration
 @EnableWebSecurity
 public class AuthConfig {
@@ -32,7 +30,7 @@ public class AuthConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
-                        .antMatchers(HttpMethod.POST, "/api/auth/create-company-admin", "api/auth/create-system-admin").hasRole("SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.POST, "/api/auth/add-company-admin", "/api/auth/add-system-admin").hasRole("SYSTEM_ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
